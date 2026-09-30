@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify reCAPTCHA</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script>
+        function onReCaptchaSuccess(token) {
+            fetch('/verify', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `g-recaptcha-response=${token}`
+            })
+            .then(response => response.text())
+            .then(data => {
+                window.location.href = '/success'; // เปลี่ยน URL ที่คุณต้องการเปลี่ยนเส้นทางไป
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <style>
+                body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background-color: #313A37;
+            color: #FFFFFF; /* ใส่สีตัวอักษรเป็นขาวหรือสีที่เหมาะสมกับสีพื้นหลัง */
+            font-family: Arial, sans-serif; /* เลือกแบบอักษรที่ต้องการ */
+            padding: 20px; /* ใส่พื้นที่ขอบเพจ */
+        }
+    </style>
+    <div class="g-recaptcha" data-sitekey="{{ site_key }}" data-callback="onReCaptchaSuccess"></div>
+</body>
+</html>
